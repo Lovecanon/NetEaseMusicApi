@@ -24,5 +24,12 @@ pip install NetEaseMusicApi
 
 ```python
 from NetEaseMusicApi import api, save_song, save_album
+# 保存歌曲
 save_song('Apologize')
+
+# 查询最新十条评论
+print(api.comments.last_comments(420513460))
+
+# 查询歌曲总评论数
+print(api.comments.total(420513460))
 ```
