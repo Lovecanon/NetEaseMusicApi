@@ -49,7 +49,7 @@ def search_album_id_by_name(albumName, number=DEFAULT_LIMIT):
 def search_song_id_by_name(songName, number=DEFAULT_LIMIT):
     r = api.search.songs(songName, number)
     if r is None:
-        print(('No song named %s' % songName))
+        print('No song named %s' % (songName,))
         return
     return r[_select_index(r, ['name', 'artists/0/name', 'album/name'])]['id']
 
@@ -80,7 +80,8 @@ def save_album(albumName, folder='.', candidateNumber=DEFAULT_LIMIT):
     for song in songs:
         print(('Downloading %s...' % song['name']))
         try:
-            if get_dfsId(song) is None: raise Exception
+            if get_dfsId(song) is None:
+                raise Exception
             with open(os.path.join(songDir, song['name'] + '.mp3'), 'wb') as f:
                 f.write(api.download(get_dfsId(song)))
         except:

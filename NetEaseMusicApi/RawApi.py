@@ -119,7 +119,8 @@ def get_dfsId(song):
         try:
             if not song[musicIndex]['name'] is None:
                 dfsId = song[musicIndex]['dfsId']
-            if not dfsId is None: break
+            if not dfsId is None:
+                break
         except:
             pass
     return dfsId

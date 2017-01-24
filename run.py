@@ -2,7 +2,7 @@ import sys
 
 from NetEaseMusicApi import api, save_song, save_album, interact_select_song
 
-save_song(1868478, 'D://')
+save_song(401249910, 'D://')
 # try:
 #     sys_input = raw_input
 # except:
