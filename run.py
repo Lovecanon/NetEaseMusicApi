@@ -2,7 +2,7 @@ import sys
 
 from NetEaseMusicApi import api, save_song, save_album, interact_select_song
 
-# save_song('Apologize')
+save_song(1868478, 'D://')
 # try:
 #     sys_input = raw_input
 # except:
@@ -12,17 +12,16 @@ from NetEaseMusicApi import api, save_song, save_album, interact_select_song
 #     print(interact_select_song(msg))
 
 # print(api.comments.last_comments(420513460))
-i = 556279
-l = list()
-
-while i < 558279:
-    if len(l) > 200:
-        print(l[-1])
-        with open('./data.txt', 'w') as f:
-            for song_id, t in l:
-                f.write('%s %s\n' % (song_id, t))
-        l.clear()
-    total = api.comments.total(i)
-    if isinstance(total, int) and total > 0:
-        l.append((i, total))
-    i += 1
+# i = 556279
+# l = list()
+# while i < 558279:
+#     if len(l) > 200:
+#         print(l[-1])
+#         with open('./data.txt', 'w') as f:
+#             for song_id, t in l:
+#                 f.write('%s %s\n' % (song_id, t))
+#         l.clear()
+#     total = api.comments.total(i)
+#     if isinstance(total, int) and total > 0:
+#         l.append((i, total))
+#     i += 1

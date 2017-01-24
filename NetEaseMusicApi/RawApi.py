@@ -110,10 +110,7 @@ def encrypted_id(dfsId):
     for i in range(len(byte2)):
         byte2[i] = byte2[i] ^ byte1[i % byte1_len]
     m = hashlib.md5(byte2).digest()
-    result = base64.b64encode(m).decode('utf8')
-    result = result.replace('/', '_')
-    result = result.replace('+', '-')
-    return result
+    return base64.b64encode(m).decode('utf8').replace('/', '_').replace('+', '-')
 
 
 def get_dfsId(song):

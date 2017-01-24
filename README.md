@@ -25,6 +25,7 @@ pip install NetEaseMusicApi
 ```python
 from NetEaseMusicApi import api, save_song, save_album
 # 保存歌曲
+# 会先通过名字/id查询歌曲，web页面上的搜索框也是调用该接口链接
 save_song('Apologize')
 
 # 查询最新十条评论
