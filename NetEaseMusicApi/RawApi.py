@@ -83,7 +83,7 @@ def _APIProxy(key, value, chain):
             elif chain[0] == 'comments':
                 url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_%s/?csrf_token=' % (nameOrId,)
                 r = requests.post(url, headers=headers, data=user_data)
-                if r.status_code == 200:
+                if r.status_code == 200 and r.text.find('comments') != -1:
                     return json.loads(r.text)[value]
                 else:
                     return 'status code:%s, result:%s' % (r.status_code,r.text)
