@@ -77,8 +77,7 @@ def _APIProxy(key, value, chain):
                 j = requests.post(url, data, headers=headers).json()
                 return _get_value(j, 'result/' + value[1])
             elif chain[0] == 'download':
-                server_ids = [1, 2, 3]
-                urls = ['http://m%d.music.126.net/%s/%s.mp3' % (i, encrypted_id(nameOrId), nameOrId) for i in server_ids]
+                urls = ['http://m%d.music.126.net/%s/%s.mp3' % (i, encrypted_id(nameOrId), nameOrId) for i in [1, 2, 3]]
                 for url in urls:
                     r = requests.get(url, headers=headers)
                     if r.status_code == 200:
