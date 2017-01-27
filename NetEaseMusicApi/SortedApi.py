@@ -1,6 +1,7 @@
 # coding=utf8
 import os
 from .RawApi import NetEaseMusicApi, get_dfsId
+import time
 
 __all__ = ['save_song', 'save_album', 'interact_select_song']
 
@@ -26,6 +27,9 @@ def _select_index(itemList, detailList, singleDetailLength=10):
                     break
             valueList.append(value[:singleDetailLength])
         return '-'.join(valueList)
+    if len(itemList) == 1:
+        print('a song match!')
+        return 0
 
     for i, item in enumerate(itemList):
         print((('%-' + str(int(len(itemList) / 10) + 4) + 's%s') % (
@@ -33,7 +37,8 @@ def _select_index(itemList, detailList, singleDetailLength=10):
     while 1:
         try:
             selectIndex = int(eval(input('Which one do you want? '))) - 1
-            if selectIndex < 0 or len(itemList) < selectIndex: raise Exception
+            if selectIndex < 0 or len(itemList) < selectIndex:
+                raise Exception
             break
         except:
             print(('Please input a positive number less than %s' % (len(itemList) + 1)))
@@ -66,9 +71,12 @@ def save_song(songName, folder='.', candidateNumber=DEFAULT_LIMIT):
         print(('%s.mp3 is sadly lost on the server' % song['name']))
     else:
         with open(os.path.join(folder, song['name'] + '.mp3'), 'wb') as f:
-            f.write(api.download(dfsId))
-        print(('%s.mp3 is downloaded successfully in "%s"' % (song['name'], folder)))
-
+            content = api.download(dfsId)
+            if content:
+                f.write(content)
+                print(('%s.mp3 is downloaded successfully in "%s"' % (song['name'], folder)))
+            else:
+                print('++++ 403 Forbidden')
 
 def save_album(albumName, folder='.', candidateNumber=DEFAULT_LIMIT):
     albumId = search_album_id_by_name(albumName, candidateNumber)

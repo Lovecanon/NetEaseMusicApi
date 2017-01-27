@@ -77,9 +77,13 @@ def _APIProxy(key, value, chain):
                 j = requests.post(url, data, headers=headers).json()
                 return _get_value(j, 'result/' + value[1])
             elif chain[0] == 'download':
-                url = 'http://m%d.music.126.net/%s/%s.mp3' % (random.randrange(1, 3), encrypted_id(nameOrId), nameOrId)
-                r = requests.get(url, headers=headers)
-                return r.content
+                server_ids = [1, 2, 3]
+                urls = ['http://m%d.music.126.net/%s/%s.mp3' % (i, encrypted_id(nameOrId), nameOrId) for i in server_ids]
+                for url in urls:
+                    r = requests.get(url, headers=headers)
+                    if r.status_code == 200:
+                        return r.content
+                return b''
             elif chain[0] == 'comments':
                 url = 'http://music.163.com/weapi/v1/resource/comments/R_SO_4_%s/?csrf_token=' % (nameOrId,)
                 r = requests.post(url, headers=headers, data=user_data)
@@ -117,7 +121,7 @@ def get_dfsId(song):
     dfsId = None
     for musicIndex in ('hMusic', 'mMusic', 'lMusic', 'bMusic'):
         try:
-            if not song[musicIndex]['name'] is None:
+            if not song[musicIndex]['dfsId'] is None:
                 dfsId = song[musicIndex]['dfsId']
             if not dfsId is None:
                 break
