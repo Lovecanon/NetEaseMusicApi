@@ -10,11 +10,12 @@ BASE_URL = 'http://music.163.com/api/'
 headers = {
     'Cookie': 'appver=1.5.0.75771',
     'Referer': 'http://music.163.com',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36'
 }
 # 为了方便，这里直接使用AES加密过后的用户名密码数据
 user_data = {
-    'params': 'vRlMDmFsdQgApSPW3Fuh93jGTi/ZN2hZ2MhdqMB503TZaIWYWujKWM4hAJnKoPdV7vMXi5GZX6iOa1aljfQwxnKsNT+5/uJKuxosmdhdBQxvX/uwXSOVdT+0RFcnSPtv',
-    'encSecKey': '46fddcef9ca665289ff5a8888aa2d3b0490e94ccffe48332eca2d2a775ee932624afea7e95f321d8565fd9101a8fbc5a9cadbe07daa61a27d18e4eb214ff83ad301255722b154f3c1dd1364570c60e3f003e15515de7c6ede0ca6ca255e8e39788c2f72877f64bc68d29fac51d33103c181cad6b0a297fe13cd55aa67333e3e5'
+    'params': 'tShDl+2GNOJ529i8REZKVnHQCBDk4bf3l5Y4rodp5lv66dbRwckzLE+UJmm5gZ3rfvedxEgzLv6XvMRwmZvGmwLFHyE7RRi6wBcT/j3B0+RJbLeL3ln3T/Nw75XSv6my6imkrvFgichcp3QUUGtvZIztP+t0BZS8IfXHr6XDrfXTJc6ONPZswcxtpqrItZ4M',
+    'encSecKey': '27152af8c1016c0b103b1079db0cc1f51ae8aab9526fe7e4ded7f5c862321c1d7765da64904d77ea261f3845e5a6d5849e5878e8f4ff1a7fcdafd1b9a2305e1c38a48c90c49b0c874274642394e1689623f5a21c0a6afa1ea4f9599e75c6ed17fee49afb6abe19e0c745cb9d8e50a4c97d250dd3a4d10b9bd097f229a7'
 }
 
 _API = {
@@ -80,7 +81,8 @@ def _APIProxy(key, value, chain):
                 urls = ['http://m%d.music.126.net/%s/%s.mp3' % (i, encrypted_id(nameOrId), nameOrId) for i in [1, 2, 3]]
                 for url in urls:
                     r = requests.get(url, headers=headers)
-                    if r.status_code == 200:
+                    print('[status code:%d] Song URL:%s' % (r.status_code, url))
+                    if str(r.status_code)[0] == '2':
                         return r.content
                 return b''
             elif chain[0] == 'comments':
@@ -89,7 +91,7 @@ def _APIProxy(key, value, chain):
                 if r.status_code == 200 and r.text.find('comments') != -1:
                     return json.loads(r.text)[value]
                 else:
-                    return 'status code:%s, result:%s' % (r.status_code,r.text)
+                    return 'status code:%s, result:%s' % (r.status_code, r.text)
             else:
                 url = BASE_URL + '/'.join(chain) + value[0].format(nameOrId, limit)
                 j = requests.get(url, headers=headers).json()
